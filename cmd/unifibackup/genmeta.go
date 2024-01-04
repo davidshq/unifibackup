@@ -11,7 +11,7 @@ import (
 	"github.com/gebn/unifibackup/v2/internal/pkg/autobackup"
 )
 
-// genmeta generates a autobackup_meta.json file for backups in the provided
+// genmeta generates an autobackup_meta.json file for backups in the provided
 // directory. This directory must only contain .unf files.
 func genmeta(backupDir string) error {
 	entries, err := os.ReadDir(backupDir)

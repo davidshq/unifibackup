@@ -18,7 +18,7 @@ const (
 )
 
 var (
-	// ops constains all possible event types we can receive from fsnotify, so
+	// ops contains all possible event types we can receive from fsnotify, so
 	// we can initialise all time series for the filesystem events counter.
 	ops = []fsnotify.Op{
 		fsnotify.Create,
