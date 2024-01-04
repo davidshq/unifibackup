@@ -7,6 +7,13 @@
 
 A daemon that monitors a UniFi Controller's `autobackup` directory, uploading new backups to S3 as soon as they are ready.
 
+## Contents
+- Controller Setup
+- Systemd Setup
+    - IAM Policy
+- Alerting
+- Restore
+
 ## Controller Setup
 
 Enable auto backup under `Settings > Auto Backup` on your controller. Set the occurrence to as often as your internet connection can take - the more frequent, the less data you are likely to lose. You only need to retain one (i.e. the latest) backup, however you may want to keep around more; this daemon will work correctly regardless, as it only pays attention to new files.
@@ -17,10 +24,10 @@ The executable is intended to run under systemd. The following instructions deta
 
 1. Download the [latest](https://github.com/gebn/unifibackup/releases/latest) archive to `/opt/unifibackup`.
 
-2. Copy `unifibackup.service` into `/etc/systemd/system`, and open the file in your favourite editor.
+2. Copy [`unifibackup.service`](https://github.com/gebn/unifibackup/blob/master/unifibackup.service) into `/etc/systemd/system`, and open the file in your favourite editor.
    1. Change the bucket to the one you want to upload to (see *IAM Policy* below for required permissions), and optionally override the destination prefix.
    2. Set `AWS_REGION` to the region of the bucket above.
-   3. If not using an instance profile, and credentials are not configured elsewhere, set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables.
+   3. If not using an [EC2 instance profile](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html), and credentials are not configured elsewhere, set the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables.
 
 3. Execute the following as `root`:
 
