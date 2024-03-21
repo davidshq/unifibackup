@@ -24,6 +24,7 @@ const (
 	subsystem = "uploader"
 )
 
+// Setup Prometheus metrics
 var (
 	uploadAttempts = promauto.NewCounter(prometheus.CounterOpts{
 		Namespace: namespace,

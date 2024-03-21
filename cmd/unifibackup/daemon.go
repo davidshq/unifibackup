@@ -16,6 +16,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+// Setup Prometheus metrics
 var (
 	lastSuccessTime = promauto.NewGauge(prometheus.GaugeOpts{
 		Name: "unifibackup_last_success_time_seconds",

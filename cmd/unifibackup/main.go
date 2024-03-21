@@ -17,6 +17,7 @@ import (
 	"go.uber.org/automaxprocs/maxprocs"
 )
 
+// Prometheus metrics for version, commit, and build time.
 var (
 	buildInfo = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
@@ -51,10 +52,14 @@ func main() {
 		Use:          "unifibackup --bucket unifi-backups",
 		Short:        "Copies UniFi Controller backups to S3",
 		Version:      stamp.Summary(),
+		// when an error occurs, display only error message, not usage text
 		SilenceUsage: true,
+		// disallow positional arguments
 		Args:         cobra.NoArgs,
+		// command to execute, return errors if any
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx := cmd.Context()
+			// load aws config
 			cfg, err := config.LoadDefaultConfig(ctx,
 				config.WithUseDualStackEndpoint(aws.DualStackEndpointStateEnabled))
 			if err != nil {
@@ -62,6 +67,7 @@ func main() {
 			}
 			s3client := s3.NewFromConfig(cfg)
 			uploader := uploader.New(s3client, flgBucket, flgPrefix)
+			fmt.Printf("%+v\n", uploader)
 			return daemon(ctx, flgMetrics, flgBackupDir, uploader, flgTimeout)
 		},
 	}
